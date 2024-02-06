@@ -61,7 +61,8 @@ CMD_TAB = KC.LCMD(KC.TAB) #KC.SM(KC.TAB, KC.LCMD)
 # Layer 1 MACROS ROW 3
 UNDO  = KC.LCMD(KC.Z)
 DEL_LINE = KC.LCMD(KC.D)
-REDO  = KC.LCMD(KC.Y)
+SEL_BLOCK  = KC.LCTRL(KC.LSHIFT(KC.SPACE))
+
 
 # CUSTOM KEYS
 def on_copy(*args, **kwargs):
@@ -86,36 +87,42 @@ def on_layer3(*args, **kwargs):
 LAYER3.after_release_handler(on_layer3)
 
 #******** Layer 2 *******
+# Layer 2 MACROS ROW 1
+
+DS_PRODUCTION = simple_key_sequence([KC.LALT(KC.SPACE), send_string('iTerm'), KC.MACRO_SLEEP_MS(100), KC.ENTER, KC.MACRO_SLEEP_MS(100), KC.LCMD(KC.LSHIFT(KC.SLSH)), send_string('production DirectSales'), KC.DOWN, KC.ENTER])
+ORIGIN_PRODUCTION = simple_key_sequence([KC.LALT(KC.SPACE), send_string('iTerm'), KC.MACRO_SLEEP_MS(100), KC.ENTER, KC.MACRO_SLEEP_MS(100), KC.LCMD(KC.LSHIFT(KC.SLSH)), send_string('production Origin'), KC.DOWN, KC.ENTER])
+AMP_PRODUCTION = simple_key_sequence([KC.LALT(KC.SPACE), send_string('iTerm'), KC.MACRO_SLEEP_MS(100), KC.ENTER, KC.MACRO_SLEEP_MS(100), KC.LCMD(KC.LSHIFT(KC.SLSH)), send_string('production Amp'), KC.DOWN, KC.ENTER])
+
 #########################
 
 _______ = KC.TRNS
 xxxxxxx = KC.NO
+
+ZOOM_IN = KC.LCMD(KC.EQUAL)
+ZOOM_OUT = KC.LCMD(KC.MINUS)
 
 # KEYMAPS
 
 keyboard.keymap = [
     # Layer 1
     [
-        ESCAPE_L1,              MOUSE_LEFT_CLICK, TD_PASTE_MUTE, LOCK,
-        ALT_TAB_L2,             CYCLE_WINDOW,     INSPECT,       CMD_TAB,
-        KC.TD(_______, LAYER3), UNDO,             DEL_LINE,      REDO,
+        KC.TD(ESCAPE_L1, LAYER1), MOUSE_LEFT_CLICK, TD_PASTE_MUTE, LOCK,
+        KC.TD(_______, LAYER2),   CYCLE_WINDOW,     INSPECT,       CMD_TAB,
+        KC.TD(_______, LAYER3),   ZOOM_OUT,         DEL_LINE,      ZOOM_IN,
     ],
     # Layer 2
     [
-        ESCAPE_L1,             KC.N1, KC.N2, KC.N3,
-        KC.TD(KC.N0, LAYER2),  KC.N4, KC.N5, KC.N6,
-        KC.TD(KC.DOT, LAYER3), KC.N7, KC.N8, KC.N9,
+        KC.TD(ESCAPE_L1, LAYER1), DS_PRODUCTION, ORIGIN_PRODUCTION, AMP_PRODUCTION,
+        KC.TD(KC.N0, LAYER2),     KC.N4, KC.N5, KC.N6,
+        KC.TD(KC.DOT, LAYER3),    KC.N7, KC.N8, KC.N9,
     ],
     # Layer 3
     [
-        ESCAPE_L1,              xxxxxxx,             xxxxxxx,             xxxxxxx,
-        KC.TD(_______, LAYER2), xxxxxxx,             xxxxxxx,             xxxxxxx,
-        KC.TD(_______, LAYER3), KC.MEDIA_PREV_TRACK, KC.MEDIA_PLAY_PAUSE, KC.MEDIA_NEXT_TRACK,
+        KC.TD(ESCAPE_L1, LAYER1), xxxxxxx,             xxxxxxx,             xxxxxxx,
+        KC.TD(_______, LAYER2),   xxxxxxx,             xxxxxxx,             xxxxxxx,
+        KC.TD(_______, LAYER3),   KC.MEDIA_PREV_TRACK, KC.MEDIA_PLAY_PAUSE, KC.MEDIA_NEXT_TRACK,
     ]
 ]
-
-ZOOM_IN = KC.LCMD(KC.EQUAL)
-ZOOM_OUT = KC.LCMD(KC.MINUS)
 
 encoders.map = [
                  ((KC.VOLD, KC.VOLU, KC.MUTE),  (ZOOM_OUT, ZOOM_IN, KC.RGB_TOG)),
